@@ -9,3 +9,5 @@
 - __Single-choice (drop menu radio button) dialog__
 - __Multi-choice (checkbox) dialog__
 - __EditText dialog__
+
+

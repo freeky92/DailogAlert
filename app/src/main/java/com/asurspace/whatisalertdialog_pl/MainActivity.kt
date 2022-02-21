@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         if (savedInstanceState == null) {
             supportFragmentManager
                 .beginTransaction()
-                .add(R.id.main_container, Menu())
+                .add(R.id.main_container, MenuDialogFragment())
                 .commit()
         }
 
@@ -108,9 +108,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         supportFragmentManager.unregisterFragmentLifecycleCallbacks(fragmentListener)
     }
 
-    override fun showTimePickerFragment() {
-        openFragment(TimePickerFragment.newInstance())
-    }
+
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()

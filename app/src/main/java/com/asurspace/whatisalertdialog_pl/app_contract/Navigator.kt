@@ -9,6 +9,5 @@ fun Fragment.navigate(): Navigator{
 
 interface Navigator {
 
-    fun showTimePickerFragment()
 
 }
