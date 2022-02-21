@@ -13,11 +13,12 @@ import androidx.lifecycle.LifecycleOwner
 import com.asurspace.whatisalertdialog_pl.R
 import com.asurspace.whatisalertdialog_pl.databinding.CustomEditablieItemBinding
 
-typealias EditableDialogResultListener = (Int) -> Unit
+typealias EditableReusableDialogResultListener = (requestKey: String, volume: Int) -> Unit
 
-class EditableDialogFragment : DialogFragment() {
+class EditableReusableDialogFragment : DialogFragment() {
 
     private val receivedVolumeValue get() = requireArguments().getInt(ARG_VALUE)
+    private val requestKey get() = requireArguments().getString(ARG_REQUEST_KEY)!!
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val editableBinding = CustomEditablieItemBinding.inflate(layoutInflater)
@@ -62,12 +63,8 @@ class EditableDialogFragment : DialogFragment() {
         Log.d(TAG, "onCancel")
     }
 
-    private fun setFragmentResult(response: Int) {
-        parentFragmentManager.setFragmentResult(
-            REQUEST_KEY,
-            bundleOf(KEY_VOLUME_RESPONSE to response)
-        )
-    }
+    private fun setFragmentResult(response: Int) { parentFragmentManager
+        .setFragmentResult(requestKey, bundleOf(KEY_VOLUME_RESPONSE to response)) }
 
     companion object {
         @JvmStatic
@@ -80,21 +77,28 @@ class EditableDialogFragment : DialogFragment() {
         private val ARG_VALUE = "ARG_VALUE"
 
         @JvmStatic
-        val REQUEST_KEY = "$TAG:defaultRequestKey"
+        private val ARG_REQUEST_KEY = "ARG_REQUEST_KEY"
 
-        fun show(fragmentManager: FragmentManager, color: Int) {
+        @JvmStatic
+        val DEFAULT_REQUEST_KEY = "$TAG:defaultRequestKey"
+
+        fun show(fragmentManager: FragmentManager, requestKey: String, volumeValue: Int) {
             val editableDialogFragment = EditableReusableDialogFragment()
-            editableDialogFragment.arguments = bundleOf(ARG_VALUE to color)
+            editableDialogFragment.arguments = bundleOf(
+                ARG_REQUEST_KEY to requestKey,
+                ARG_VALUE to volumeValue
+            )
             editableDialogFragment.show(fragmentManager, TAG)
         }
 
         fun setUpListener(
             fragmentManager: FragmentManager,
             lifecycleOwner: LifecycleOwner,
-            listener: EditableDialogResultListener
+            requestKey: String,
+            listener: EditableReusableDialogResultListener
         ) {
-            fragmentManager.setFragmentResultListener(REQUEST_KEY, lifecycleOwner) { _, result ->
-                listener.invoke(result.getInt(KEY_VOLUME_RESPONSE))
+            fragmentManager.setFragmentResultListener(requestKey, lifecycleOwner) { key, result ->
+                listener.invoke(key, result.getInt(KEY_VOLUME_RESPONSE))
             }
         }
     }

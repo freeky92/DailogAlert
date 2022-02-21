@@ -21,6 +21,7 @@ class MenuDialogFragment : Fragment(), ICustomToolbarTitleProvider {
     private val binding get() = _binding!!
 
     private var volLevel by Delegates.notNull<Int>()
+    private var appVolLevel by Delegates.notNull<Int>()
     private var colorBG by Delegates.notNull<Int>()
     private lateinit var date: Date
 
@@ -28,7 +29,8 @@ class MenuDialogFragment : Fragment(), ICustomToolbarTitleProvider {
         super.onCreate(savedInstanceState)
 
         date = Date(savedInstanceState?.getLong(KEY_TIME) ?: System.currentTimeMillis())
-        volLevel = savedInstanceState?.getInt(KEY_VOLUME) ?: (1..99).random()
+        appVolLevel = savedInstanceState?.getInt(KEY_APP_VOLUME) ?: (1..99).random()
+        volLevel = savedInstanceState?.getInt(KEY_MAIN_VOLUME) ?: (1..99).random()
         colorBG = savedInstanceState?.getInt(KEY_COLOR) ?: Color.BLUE
         Log.d("Current time", System.currentTimeMillis().toString())
     }
@@ -55,8 +57,11 @@ class MenuDialogFragment : Fragment(), ICustomToolbarTitleProvider {
         binding.colorTbMultiChoice.setOnClickListener {
             setColorMultiChoiceDialog()
         }
-        binding.setVolumeEt.setOnClickListener {
-            setEditableDialogFragment()
+        binding.setMainVolumeEt.setOnClickListener {
+            setEditableDialogFragment(REQUEST_KEY_MAIN_VOLUME, volLevel)
+        }
+        binding.setAppVolumeEt.setOnClickListener {
+            setEditableDialogFragment(REQUEST_KEY_APP_VOLUME, appVolLevel)
         }
 
         updateUi()
@@ -72,12 +77,13 @@ class MenuDialogFragment : Fragment(), ICustomToolbarTitleProvider {
         setSeekbarDialogFragmentListener()
         setSingleChoiceListener()
         setMultiplyChoiceDialogFragmentListener()
-        setEditableDialogFragmentListener()
+        setEditableReusableDialogFragmentListener()
     }
 
     private fun updateUi() {
         binding.timeTv.text = String.format("Time: ${hourFormat.format(date)}")
-        binding.volumeTv.text = getString(R.string.volume_eq, volLevel)
+        binding.appVolumeTv.text = getString(R.string.app_volume_eq, appVolLevel)
+        binding.mainVolumeTv.text = getString(R.string.volume_eq, volLevel)
         binding.progressbar.progress = volLevel
         binding.colorTbMultiChoice.setBackgroundColor(colorBG)
     }
@@ -136,15 +142,34 @@ class MenuDialogFragment : Fragment(), ICustomToolbarTitleProvider {
         }
     }
 
-    private fun setEditableDialogFragment() {
-        EditableDialogFragment.show(parentFragmentManager, volLevel)
+    private fun setEditableDialogFragment(requestKey: String, volumeValue: Int) {
+        EditableReusableDialogFragment.show(parentFragmentManager, requestKey, volumeValue)
     }
 
-    private fun setEditableDialogFragmentListener() {
-        EditableDialogFragment.setUpListener(parentFragmentManager, viewLifecycleOwner) {
-            volLevel = it
+    private fun setEditableReusableDialogFragmentListener() {
+        val listener: EditableReusableDialogResultListener = { requestKey, volume ->
+            when (requestKey) {
+                REQUEST_KEY_APP_VOLUME -> {
+                    appVolLevel = volume
+                }
+                REQUEST_KEY_MAIN_VOLUME -> {
+                    volLevel = volume
+                }
+            }
             updateUi()
         }
+        EditableReusableDialogFragment.setUpListener(
+            parentFragmentManager,
+            viewLifecycleOwner,
+            REQUEST_KEY_MAIN_VOLUME,
+            listener
+        )
+        EditableReusableDialogFragment.setUpListener(
+            parentFragmentManager,
+            viewLifecycleOwner,
+            REQUEST_KEY_APP_VOLUME,
+            listener
+        )
     }
 
     override fun onDestroyView() {
@@ -155,7 +180,8 @@ class MenuDialogFragment : Fragment(), ICustomToolbarTitleProvider {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putLong(KEY_TIME, date.time)
-        outState.putInt(KEY_VOLUME, volLevel)
+        outState.putInt(KEY_APP_VOLUME, appVolLevel)
+        outState.putInt(KEY_MAIN_VOLUME, volLevel)
         outState.putInt(KEY_COLOR, colorBG)
     }
 
@@ -178,10 +204,19 @@ class MenuDialogFragment : Fragment(), ICustomToolbarTitleProvider {
         private val KEY_COLOR = "KEY_COLOR"
 
         @JvmStatic
-        private val KEY_VOLUME = "KET_VOLUME"
+        private val KEY_MAIN_VOLUME = "KEY_MAIN_VOLUME"
+
+        @JvmStatic
+        private val KEY_APP_VOLUME = "KEY_APP_VOLUME"
 
         @JvmStatic
         private val TAG = this::class.java.simpleName
+
+        @JvmStatic
+        private val REQUEST_KEY_MAIN_VOLUME = "REQUEST_KEY_MAIN_VOLUME"
+
+        @JvmStatic
+        private val REQUEST_KEY_APP_VOLUME = "REQUEST_KEY_APP_VOLUME"
 
     }
 
