@@ -1,4 +1,4 @@
-package com.asurspace.whatisalertdialog_pl
+package com.asurspace.d_alert
 
 import android.graphics.Color
 import android.os.Bundle
@@ -7,9 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.asurspace.whatisalertdialog_pl.app_contract.ICustomToolbarTitleProvider
-import com.asurspace.whatisalertdialog_pl.databinding.FragmentMenuDialogFragmentBinding
-import com.asurspace.whatisalertdialog_pl.dialog_fragments.*
+import com.asurspace.d_alert.app_contract.ICustomToolbarTitleProvider
+import com.asurspace.d_alert.databinding.FragmentMenuDialogFragmentBinding
+import com.asurspace.d_alert.dialog_fragments.*
 import com.google.android.material.snackbar.Snackbar
 import java.util.*
 import kotlin.properties.Delegates

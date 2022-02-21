@@ -1,4 +1,4 @@
-package com.asurspace.whatisalertdialog_pl.dialog_fragments
+package com.asurspace.d_alert.dialog_fragments
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -9,7 +9,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
-import com.asurspace.whatisalertdialog_pl.R
+import com.asurspace.d_alert.R
 
 typealias SimpleDialogResultListener = (String) -> Unit
 

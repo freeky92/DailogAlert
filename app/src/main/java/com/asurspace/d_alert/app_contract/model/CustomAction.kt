@@ -1,4 +1,4 @@
-package com.asurspace.whatisalertdialog_pl.app_contract.model
+package com.asurspace.d_alert.app_contract.model
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes

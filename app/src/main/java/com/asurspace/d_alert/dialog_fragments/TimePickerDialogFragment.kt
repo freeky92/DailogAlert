@@ -1,4 +1,4 @@
-package com.asurspace.whatisalertdialog_pl.dialog_fragments
+package com.asurspace.d_alert.dialog_fragments
 
 import android.app.Dialog
 import android.app.TimePickerDialog

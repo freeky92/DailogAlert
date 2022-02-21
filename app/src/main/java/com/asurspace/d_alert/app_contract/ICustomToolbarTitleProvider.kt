@@ -1,4 +1,4 @@
-package com.asurspace.whatisalertdialog_pl.app_contract
+package com.asurspace.d_alert.app_contract
 
 import androidx.annotation.StringRes
 

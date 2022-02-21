@@ -1,42 +1,61 @@
-package com.asurspace.whatisalertdialog_pl.dialog_fragments
+package com.asurspace.d_alert.dialog_fragments
 
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
+import android.widget.SeekBar
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
-import com.asurspace.whatisalertdialog_pl.R
-import com.asurspace.whatisalertdialog_pl.app_contract.model.AvailableVoleValues
+import com.asurspace.d_alert.R
+import com.asurspace.d_alert.databinding.VolumeItemBinding
 
-typealias SingleChoiceResultListener = (Int) -> Unit
+typealias SeekbarResultListener = (Int) -> Unit
 
-class SingleChoiceDialogFragment : DialogFragment() {
+class SeekbarDialogFragment : DialogFragment() {
 
     private val volume get() = requireArguments().getInt(ARG_VOLUME)
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val volumeItems = AvailableVoleValues.createVolumeValues(volume)
-        val volumeTextItems = volumeItems.values
-            .map { getString(R.string.volume_eq, it) }
-            .toTypedArray()
+        val volBinding = VolumeItemBinding.inflate(layoutInflater)
+        val seekbar = volBinding.setVolSeekbar
 
-        return AlertDialog.Builder(requireContext())
-            .setTitle("Volume setup")
+        seekbar.progress = volume
+        var resultVolume = volume
+        seekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(p0: SeekBar?, value: Int, p2: Boolean) {
+                volBinding.textSetVolume.text = getString(R.string.volume_eq, value)
+                resultVolume = value
+            }
+
+            override fun onStartTrackingTouch(p0: SeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(p0: SeekBar?) {
+            }
+
+        })
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.set_volume_level))
+            .setView(volBinding.root)
             .setCancelable(true)
-            .setSingleChoiceItems(volumeTextItems, volumeItems.currentIndex, null)
-            .setPositiveButton("Confirm") { dialog, _ ->
-                val index = (dialog as AlertDialog).listView.checkedItemPosition
-                val volumeValue = volumeItems.values[index]
-                parentFragmentManager.setFragmentResult(
-                    REQUEST_KEY,
-                    bundleOf(KEY_VOLUME_RESPONSE to volumeValue)
-                )
+            .setPositiveButton("Confirm") { _, _ ->
+                setFragmentResult(resultVolume)
             }
             .create()
+
+        return dialog
+    }
+
+    private fun setFragmentResult(response: Int) {
+        parentFragmentManager.setFragmentResult(
+            REQUEST_KEY,
+            bundleOf(KEY_VOLUME_RESPONSE to response)
+        )
     }
 
     override fun onDismiss(dialog: DialogInterface) {
@@ -51,7 +70,7 @@ class SingleChoiceDialogFragment : DialogFragment() {
 
     companion object {
         @JvmStatic
-        private val TAG = SingleChoiceDialogFragment::class.java.name
+        private val TAG = SeekbarDialogFragment::class.java.name
 
         @JvmStatic
         private val KEY_VOLUME_RESPONSE = "VOLUME_RESPONSE"
@@ -63,7 +82,7 @@ class SingleChoiceDialogFragment : DialogFragment() {
         val REQUEST_KEY = "$TAG:defaultRequestKey"
 
         fun show(fragmentManager: FragmentManager, volumeValue: Int) {
-            val dialogFragment = SingleChoiceDialogFragment()
+            val dialogFragment = SeekbarDialogFragment()
             dialogFragment.arguments = bundleOf(ARG_VOLUME to volumeValue)
             dialogFragment.show(fragmentManager, TAG)
         }
@@ -71,11 +90,12 @@ class SingleChoiceDialogFragment : DialogFragment() {
         fun setUpListener(
             fragmentManager: FragmentManager,
             lifecycleOwner: LifecycleOwner,
-            listener: SingleChoiceResultListener
+            listener: SeekbarResultListener
         ) {
             fragmentManager.setFragmentResultListener(REQUEST_KEY, lifecycleOwner) { _, result ->
                 listener.invoke(result.getInt(KEY_VOLUME_RESPONSE))
             }
         }
     }
+
 }
