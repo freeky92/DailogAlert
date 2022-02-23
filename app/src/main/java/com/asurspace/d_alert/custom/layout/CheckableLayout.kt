@@ -1,4 +1,4 @@
-package com.asurspace.whatisalertdialog_pl.custom.layout
+package com.asurspace.d_alert.custom.layout
 
 import android.content.Context
 import android.util.AttributeSet

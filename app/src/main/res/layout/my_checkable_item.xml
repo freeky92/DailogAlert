@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.asurspace.whatisalertdialog_pl.custom.layout.CheckableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.asurspace.d_alert.custom.layout.CheckableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -50,4 +50,4 @@
         app:layout_constraintBottom_toBottomOf="@id/volumeLevelLabelTextView"
         app:layout_constraintEnd_toEndOf="parent" />
 
-</com.asurspace.whatisalertdialog_pl.custom.layout.CheckableLayout>
+</com.asurspace.d_alert.custom.layout.CheckableLayout>

@@ -1,4 +1,4 @@
-package com.asurspace.whatisalertdialog_pl
+package com.asurspace.d_alert
 
 import android.graphics.Color
 import android.os.Bundle
@@ -9,11 +9,11 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import com.asurspace.whatisalertdialog_pl.app_contract.ICustomToolbarTitleProvider
-import com.asurspace.whatisalertdialog_pl.app_contract.IProvideCustomAction
-import com.asurspace.whatisalertdialog_pl.app_contract.Navigator
-import com.asurspace.whatisalertdialog_pl.app_contract.model.CustomAction
-import com.asurspace.whatisalertdialog_pl.databinding.ActivityMainBinding
+import com.asurspace.d_alert.app_contract.ICustomToolbarTitleProvider
+import com.asurspace.d_alert.app_contract.IProvideCustomAction
+import com.asurspace.d_alert.app_contract.Navigator
+import com.asurspace.d_alert.app_contract.model.CustomAction
+import com.asurspace.d_alert.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(), Navigator {
 
@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         if (savedInstanceState == null) {
             supportFragmentManager
                 .beginTransaction()
-                .add(R.id.main_container, Menu())
+                .add(R.id.main_container, MenuDialogFragment())
                 .commit()
         }
 
@@ -108,9 +108,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         supportFragmentManager.unregisterFragmentLifecycleCallbacks(fragmentListener)
     }
 
-    override fun showTimePickerFragment() {
-        openFragment(TimePickerFragment.newInstance())
-    }
+
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()

@@ -1,4 +1,4 @@
-package com.asurspace.whatisalertdialog_pl
+package com.asurspace.d_alert
 
 import android.annotation.SuppressLint
 import java.text.SimpleDateFormat

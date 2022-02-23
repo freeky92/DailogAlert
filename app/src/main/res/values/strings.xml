@@ -1,17 +1,23 @@
 <resources>
-    <string name="app_name">WhatIsAlertDialog_PL</string>
+    <string name="app_name">D Alert</string>
     <string name="toolbar_app_name">Alert Dialog</string>
     <string name="time_picker_tb_text">Time picker</string>
     <string name="main_menu">Main menu</string>
     <string name="set_volume">Set volume</string>
+    <string name="set_volume_level_seekbar">Set volume level(seekbar)</string>
     <string name="set_volume_level">Set volume level</string>
-    <string name="volume_eq">Volume = %1$d%%</string>
+    <string name="volume_eq">Main volume = %1$d%%</string>
+    <string name="app_volume_eq">App volume = %1$d%%</string>
     <string name="time_eq">Time: %1$d</string>
     <string name="set_color_multi_choice">Set Color(multi choice)</string>
-    <string name="single_v">AlertD (single V choice)</string>
-    <string name="set_volume_et_text">Set Volume (ET)</string>
+    <string name="single_v">Set Volume(single choice)</string>
+    <string name="set_volume_et_text">Set main Volume (ET)</string>
+    <string name="set_volume_et_text_app">Set app Volume (ET)</string>
     <string name="lvl">LVL</string>
     <string name="enter_volume_value">Enter volume value</string>
     <string name="field_is_empty">Field is empty</string>
     <string name="invalid_value">Invalid value</string>
+    <string name="simple_dialog_fragment">Simple dialog fragment</string>
+    <string name="set_color">Set color</string>
+    <string name="set_time">Set time</string>
 </resources>
